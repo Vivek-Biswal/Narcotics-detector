@@ -1,0 +1,46 @@
+name: narcotics_detector
+description: Digital Companion for Colorimetric Field Drug Testing
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  provider: ^6.1.2
+
+  # Navigation
+  go_router: ^14.6.3
+
+  # UI
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+
+  # Utils
+  intl: ^0.19.0
+  uuid: ^4.5.1
+  equatable: ^2.0.7
+
+  # Storage (mock/local)
+  shared_preferences: ^2.3.3
+
+  # QR (placeholder)
+  qr_flutter: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
