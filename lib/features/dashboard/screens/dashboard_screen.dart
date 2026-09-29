@@ -46,7 +46,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       final histCtrl = context.read<dynamic>();
       // For now, read directly from repository
       final authCtrl = context.read<AuthController>();
-      _ = authCtrl; // used below
 
       // Get stats from mock
       _stats = {'total': 5, 'positive': 2, 'negative': 2, 'inconclusive': 1};
