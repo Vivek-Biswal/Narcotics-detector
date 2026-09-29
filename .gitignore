@@ -46,3 +46,9 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+# Website
+website/node_modules/
+website/dist/
+website/.env*
+!website/.env.example
+website/test-results/
