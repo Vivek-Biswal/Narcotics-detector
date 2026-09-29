@@ -1,0 +1,7 @@
+{
+  "appId": "in.etaernal.narctrace",
+  "appName": "NarcTrace",
+  "webDir": "dist",
+  "android": { "allowMixedContent": false, "backgroundColor": "#f7f9f9" },
+  "server": { "androidScheme": "https" }
+}

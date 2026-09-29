@@ -52,3 +52,5 @@ website/dist/
 website/.env*
 !website/.env.example
 website/test-results/
+
+/releases/*.apk
