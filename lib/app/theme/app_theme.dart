@@ -25,6 +25,7 @@ class AppTheme {
       outlinedButtonTheme: _outlinedButtonTheme(),
       inputDecorationTheme: _inputDecorationTheme(Brightness.light),
       dividerTheme: const DividerThemeData(space: 1, thickness: 1),
+      scaffoldBackgroundColor: AppColors.backgroundLight,
     );
   }
 
@@ -50,25 +51,25 @@ class AppTheme {
       dividerTheme: DividerThemeData(
         space: 1,
         thickness: 1,
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.white.withValues(alpha: 0.1),
       ),
       scaffoldBackgroundColor: AppColors.backgroundDark,
     );
   }
 
   static AppBarTheme _appBarTheme(Brightness brightness) {
-    final isDark = brightness == Brightness.dark;
+    // Both light and dark themes get the dark navy app header
     return AppBarTheme(
       elevation: 0,
       scrolledUnderElevation: 1,
-      backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-      foregroundColor: isDark ? Colors.white : AppColors.textDark,
+      backgroundColor: AppColors.surfaceDark, // Dark navy app header
+      foregroundColor: Colors.white,
       titleTextStyle: AppTextStyles.titleLarge.copyWith(
-        color: isDark ? Colors.white : AppColors.textDark,
+        color: Colors.white,
         fontWeight: FontWeight.w600,
       ),
-      iconTheme: IconThemeData(
-        color: isDark ? Colors.white : AppColors.textDark,
+      iconTheme: const IconThemeData(
+        color: Colors.white,
       ),
     );
   }
@@ -81,8 +82,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: isDark
-              ? Colors.white.withOpacity(0.08)
-              : Colors.black.withOpacity(0.08),
+              ? Colors.white.withValues(alpha: 0.08)
+              : Colors.black.withValues(alpha: 0.08),
         ),
       ),
       color: isDark ? AppColors.cardDark : AppColors.cardLight,
@@ -124,8 +125,8 @@ class AppTheme {
     return InputDecorationTheme(
       filled: true,
       fillColor: isDark
-          ? Colors.white.withOpacity(0.06)
-          : Colors.black.withOpacity(0.04),
+          ? Colors.white.withValues(alpha: 0.06)
+          : Colors.black.withValues(alpha: 0.04),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -134,8 +135,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: isDark
-              ? Colors.white.withOpacity(0.12)
-              : Colors.black.withOpacity(0.12),
+              ? Colors.white.withValues(alpha: 0.12)
+              : Colors.black.withValues(alpha: 0.12),
         ),
       ),
       focusedBorder: OutlineInputBorder(

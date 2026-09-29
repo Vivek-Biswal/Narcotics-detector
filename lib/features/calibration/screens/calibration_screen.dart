@@ -78,7 +78,7 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF1C2128),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Stack(
         children: [
@@ -87,11 +87,11 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.biotech_rounded,
-                    size: 48, color: Colors.white.withOpacity(0.1)),
+                    size: 48, color: Colors.white.withValues(alpha: 0.1)),
                 const SizedBox(height: 8),
                 Text('Captured Image Preview',
                     style: TextStyle(
-                        color: Colors.white.withOpacity(0.2), fontSize: 12)),
+                        color: Colors.white.withValues(alpha: 0.2), fontSize: 12)),
               ],
             ),
           ),
@@ -122,7 +122,7 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.negative.withOpacity(0.2),
+                color: AppColors.negative.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: const Row(
@@ -192,7 +192,7 @@ class _CalibrationScreenState extends State<CalibrationScreen> {
               child: LinearProgressIndicator(
                 value: ctrl.progress,
                 minHeight: 6,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 valueColor:
                     const AlwaysStoppedAnimation<Color>(AppColors.primary),
               ),

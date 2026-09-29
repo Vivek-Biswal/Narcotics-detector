@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/verification.dart';
 import '../../../services/service_interfaces.dart';
-import '../../../core/enums/app_enums.dart';
 
 enum VerifyStatus { idle, verifying, verified, failed, error }
 

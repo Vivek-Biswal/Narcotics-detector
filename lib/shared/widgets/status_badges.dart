@@ -26,7 +26,7 @@ class ResultBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: config['bg'] as Color,
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: (config['color'] as Color).withOpacity(0.4)),
+        border: Border.all(color: (config['color'] as Color).withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

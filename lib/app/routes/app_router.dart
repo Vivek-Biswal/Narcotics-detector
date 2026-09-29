@@ -10,8 +10,11 @@ import '../../features/calibration/screens/calibration_screen.dart';
 import '../../features/result/screens/result_screen.dart';
 import '../../features/records/screens/digital_record_screen.dart';
 import '../../features/verification/screens/qr_verification_screen.dart';
+import '../../features/verification/screens/verification_success_screen.dart';
+import '../../features/verification/screens/verification_failed_screen.dart';
 import '../../features/history/screens/test_history_screen.dart';
 import '../../features/history/screens/test_details_screen.dart';
+import '../../features/location/screens/location_screen.dart';
 import '../../models/test_record.dart';
 
 class AppRouter {
@@ -80,6 +83,21 @@ class AppRouter {
           final record = state.extra as TestRecord?;
           return TestDetailsScreen(record: record);
         },
+      ),
+      GoRoute(
+        path: RouteNames.verificationSuccess,
+        name: 'verificationSuccess',
+        builder: (context, state) => const VerificationSuccessScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.tamperedRecord,
+        name: 'tamperedRecord',
+        builder: (context, state) => const VerificationFailedScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.location,
+        name: 'location',
+        builder: (context, state) => const LocationScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

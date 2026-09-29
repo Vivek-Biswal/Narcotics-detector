@@ -1,30 +1,26 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:narcotics_detector/main.dart';
+import 'package:narcotics_detector/features/auth/controllers/auth_controller.dart';
+import 'package:narcotics_detector/services/mock/mock_auth_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('NarcTrace app smoke test — renders without crashing',
+      (WidgetTester tester) async {
+    // Build the full app (NarcoticsDetectorApp) and trigger a frame.
+    await tester.pumpWidget(const NarcoticsDetectorApp());
+    await tester.pump(const Duration(milliseconds: 300));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // The app should render the login screen root.
+    // We just verify the app starts up without throwing.
+    expect(find.byType(MaterialApp), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('AuthController starts unauthenticated',
+      (WidgetTester tester) async {
+    final auth = AuthController(authService: MockAuthService());
+    expect(auth.isAuthenticated, isFalse);
+    expect(auth.operator, isNull);
   });
 }

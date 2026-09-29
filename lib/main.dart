@@ -14,7 +14,6 @@ import 'services/mock/mock_image_analysis_service.dart';
 import 'services/mock/mock_location_service.dart';
 import 'services/mock/mock_record_service.dart';
 import 'services/mock/mock_verification_service.dart';
-import 'services/mock/mock_qr_service.dart';
 import 'repositories/test_repository.dart';
 
 void main() {
