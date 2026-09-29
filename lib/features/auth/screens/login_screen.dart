@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen>
     final auth = context.watch<AuthController>();
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: AppColors.backgroundDark, // Enforce dark background
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnim,
@@ -97,14 +97,14 @@ class _LoginScreenState extends State<LoginScreen>
           height: 80,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [AppColors.primary, Color(0xFF0D47A1)],
+              colors: [AppColors.primary, AppColors.primaryDark],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.4),
+                color: AppColors.primary.withValues(alpha: 0.4),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -120,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen>
         Text(
           AppConstants.appName.toUpperCase(),
           style: theme.textTheme.titleLarge?.copyWith(
+            color: Colors.white,
             letterSpacing: 2.5,
             fontWeight: FontWeight.w800,
           ),
@@ -128,22 +129,22 @@ class _LoginScreenState extends State<LoginScreen>
         Text(
           AppConstants.orgName,
           style: theme.textTheme.bodySmall?.copyWith(
+            color: Colors.white70,
             letterSpacing: 1.0,
-            color: AppColors.textMuted,
           ),
         ),
         const SizedBox(height: AppSpacing.sm),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
           ),
           child: Text(
             'CLASSIFIED FIELD SYSTEM',
             style: theme.textTheme.labelSmall?.copyWith(
-              color: AppColors.primary,
+              color: Colors.white,
               letterSpacing: 1.5,
             ),
           ),
@@ -156,11 +157,15 @@ class _LoginScreenState extends State<LoginScreen>
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardTheme.color, // Will be white in light theme
         borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          )
+        ],
       ),
       child: Form(
         key: _formKey,
@@ -169,7 +174,9 @@ class _LoginScreenState extends State<LoginScreen>
           children: [
             Text(
               'Operator Sign In',
-              style: theme.textTheme.titleMedium,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
@@ -241,10 +248,10 @@ class _LoginScreenState extends State<LoginScreen>
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
-                  color: AppColors.negative.withOpacity(0.1),
+                  color: AppColors.negative.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                   border: Border.all(
-                      color: AppColors.negative.withOpacity(0.3)),
+                      color: AppColors.negative.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
@@ -289,25 +296,25 @@ class _LoginScreenState extends State<LoginScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.security, size: 12, color: AppColors.textMuted),
+            const Icon(Icons.security, size: 12, color: Colors.white70),
             const SizedBox(width: 6),
             Text(
               'Secured · Encrypted · Tamper-evident',
-              style: theme.textTheme.labelSmall,
+              style: theme.textTheme.labelSmall?.copyWith(color: Colors.white70),
             ),
           ],
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
           'Authorised personnel only. Unauthorised access will be prosecuted.',
-          style: theme.textTheme.labelSmall?.copyWith(fontSize: 10),
+          style: theme.textTheme.labelSmall?.copyWith(fontSize: 10, color: Colors.white60),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
           'v${AppConstants.appVersion} · ${AppConstants.orgCode}',
           style: theme.textTheme.labelSmall?.copyWith(
-            color: AppColors.textMuted.withOpacity(0.5),
+            color: Colors.white30,
           ),
         ),
       ],

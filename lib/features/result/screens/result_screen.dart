@@ -10,7 +10,6 @@ import '../../../app/theme/app_spacing.dart';
 import '../../../core/enums/app_enums.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../shared/widgets/status_badges.dart';
 import '../../../shared/widgets/metadata_row.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -28,7 +27,6 @@ class ResultScreen extends StatelessWidget {
         resultCtrl.substanceName ?? 'Heroin Class A (presumptive)';
     final colourDelta = resultCtrl.colourDelta ?? 'ΔE = 42.3';
     final operator = auth.operator;
-    final theme = Theme.of(context);
     final now = DateTime.now();
     final testId =
         'TEST-${now.year}-${now.millisecondsSinceEpoch.toString().substring(8)}';
@@ -137,9 +135,9 @@ class _DisclaimerBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.warning.withOpacity(0.08),
+        color: AppColors.warning.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: AppColors.warning.withOpacity(0.25)),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.25)),
       ),
       child: Row(
         children: [
@@ -162,7 +160,7 @@ class _DisclaimerBanner extends StatelessWidget {
                 Text(
                   AppConstants.resultDisclaimer,
                   style: TextStyle(
-                    color: AppColors.warning.withOpacity(0.8),
+                    color: AppColors.warning.withValues(alpha: 0.8),
                     fontSize: 11,
                   ),
                 ),
@@ -190,12 +188,12 @@ class _ResultHeroCard extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xl),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [color.withOpacity(0.15), color.withOpacity(0.05)],
+          colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.05)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        border: Border.all(color: color.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1.5),
       ),
       child: Column(
         children: [
@@ -203,9 +201,9 @@ class _ResultHeroCard extends StatelessWidget {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               shape: BoxShape.circle,
-              border: Border.all(color: color.withOpacity(0.4), width: 2),
+              border: Border.all(color: color.withValues(alpha: 0.4), width: 2),
             ),
             child: Icon(
               config['icon'] as IconData,
@@ -227,7 +225,7 @@ class _ResultHeroCard extends StatelessWidget {
           Text(
             result.description,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color.withOpacity(0.8),
+                  color: color.withValues(alpha: 0.8),
                 ),
             textAlign: TextAlign.center,
           ),
@@ -300,7 +298,7 @@ class _AnalysisCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: confidence,
                 minHeight: 8,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                 valueColor: AlwaysStoppedAnimation<Color>(
                   confidence >= 0.8
                       ? AppColors.negative

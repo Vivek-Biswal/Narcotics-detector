@@ -152,7 +152,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withOpacity(0.9),
+                  Colors.black.withValues(alpha: 0.9),
                   Colors.transparent,
                 ],
               ),
@@ -163,7 +163,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen>
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.negative.withOpacity(0.2),
+                    color: AppColors.negative.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: const Row(
@@ -243,14 +243,14 @@ class _MockCameraPreview extends StatelessWidget {
             children: [
               Icon(
                 Icons.camera_alt_outlined,
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 size: 64,
               ),
               const SizedBox(height: 12),
               Text(
                 'CAMERA PREVIEW',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   letterSpacing: 3,
                   fontSize: 12,
                 ),
@@ -259,7 +259,7 @@ class _MockCameraPreview extends StatelessWidget {
               Text(
                 'Mock implementation',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   fontSize: 10,
                 ),
               ),
@@ -299,9 +299,9 @@ class _CaptureGuideOverlay extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: AppColors.accent.withOpacity(0.5), width: 1.5),
+                    color: AppColors.accent.withValues(alpha: 0.5), width: 1.5),
                 borderRadius: BorderRadius.circular(8),
-                color: AppColors.accent.withOpacity(0.05),
+                color: AppColors.accent.withValues(alpha: 0.05),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
@@ -344,7 +344,7 @@ class _CaptureControls extends StatelessWidget {
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           colors: [
-            Colors.black.withOpacity(0.9),
+            Colors.black.withValues(alpha: 0.9),
             Colors.transparent,
           ],
         ),
@@ -450,7 +450,7 @@ class _MockCapturedImage extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A2E),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
       ),
       child: Stack(
         children: [
@@ -460,12 +460,12 @@ class _MockCapturedImage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.biotech_rounded,
-                    size: 64, color: Colors.white.withOpacity(0.15)),
+                    size: 64, color: Colors.white.withValues(alpha: 0.15)),
                 const SizedBox(height: 8),
                 Text(
                   'TEST KIT IMAGE',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     letterSpacing: 2,
                     fontSize: 11,
                   ),
@@ -482,15 +482,15 @@ class _MockCapturedImage extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: AppColors.accent.withOpacity(0.7), width: 2),
+                    color: AppColors.accent.withValues(alpha: 0.7), width: 2),
                 borderRadius: BorderRadius.circular(4),
-                color: AppColors.accent.withOpacity(0.05),
+                color: AppColors.accent.withValues(alpha: 0.05),
               ),
               child: Center(
                 child: Text(
                   'REF\nCARD',
                   style: TextStyle(
-                    color: AppColors.accent.withOpacity(0.7),
+                    color: AppColors.accent.withValues(alpha: 0.7),
                     fontSize: 9,
                     letterSpacing: 1,
                   ),
@@ -512,7 +512,7 @@ class _CameraGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(opacity)
+      ..color = Colors.white.withValues(alpha: opacity)
       ..strokeWidth = 0.5;
 
     // Rule of thirds grid
@@ -537,7 +537,7 @@ class _CameraGridPainter extends CustomPainter {
 class _GuideOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final dimPaint = Paint()..color = Colors.black.withOpacity(0.5);
+    final dimPaint = Paint()..color = Colors.black.withValues(alpha: 0.5);
     final clearPaint = Paint()..blendMode = BlendMode.clear;
 
     // Dim entire screen

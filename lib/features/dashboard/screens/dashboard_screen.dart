@@ -39,15 +39,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _error = null;
     });
     try {
-      final repo = context.read<TestRepository?>();
-      // Access via provider or manually
-      final recordCtrl = context.read<dynamic>();
-      // Use the history controller's repository
-      final histCtrl = context.read<dynamic>();
-      // For now, read directly from repository
-      final authCtrl = context.read<AuthController>();
-      _ = authCtrl; // used below
-
       // Get stats from mock
       _stats = {'total': 5, 'positive': 2, 'negative': 2, 'inconclusive': 1};
 
@@ -179,6 +170,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0, // Home is index 0
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textMuted,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.history_outlined), label: 'History'),
+          BottomNavigationBarItem(icon: Icon(Icons.verified_user_outlined), label: 'Verify'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+        ],
+        onTap: (index) {
+          if (index == 1) context.go(RouteNames.testHistory);
+          if (index == 2) context.go('${RouteNames.qrVerification}?mode=verify');
+          if (index == 3) {} // Profile placeholder
+        },
+      ),
     );
   }
 
@@ -213,14 +221,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primary.withOpacity(0.15),
-            AppColors.accent.withOpacity(0.05),
+            AppColors.primary.withValues(alpha: 0.15),
+            AppColors.accent.withValues(alpha: 0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -263,7 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.negative.withOpacity(0.15),
+              color: AppColors.negative.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(100),
             ),
             child: Row(

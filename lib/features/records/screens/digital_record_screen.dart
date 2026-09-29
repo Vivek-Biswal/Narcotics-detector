@@ -283,10 +283,10 @@ class _ImageSection extends StatelessWidget {
                 color: const Color(0xFF1C2128),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 border: Border.all(
-                    color: AppColors.primary.withOpacity(0.2)),
+                    color: AppColors.primary.withValues(alpha: 0.2)),
               ),
               child: Icon(Icons.biotech_rounded,
-                  color: AppColors.primary.withOpacity(0.3), size: 36),
+                  color: AppColors.primary.withValues(alpha: 0.3), size: 36),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(

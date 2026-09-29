@@ -11,4 +11,7 @@ abstract class RouteNames {
   static const qrVerification = '/qr-verification';
   static const testHistory = '/test-history';
   static const testDetails = '/test-details';
+  static const verificationSuccess = '/verification-success';
+  static const tamperedRecord = '/tampered-record';
+  static const location = '/location';
 }

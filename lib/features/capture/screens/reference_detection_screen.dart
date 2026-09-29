@@ -78,7 +78,7 @@ class _ReferenceDetectionScreenState extends State<ReferenceDetectionScreen> {
                 color: const Color(0xFF1C2128),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                    color: _getBorderColor().withOpacity(0.6), width: 2),
+                    color: _getBorderColor().withValues(alpha: 0.6), width: 2),
               ),
               child: Stack(
                 children: [
@@ -88,12 +88,12 @@ class _ReferenceDetectionScreenState extends State<ReferenceDetectionScreen> {
                       children: [
                         Icon(Icons.biotech_rounded,
                             size: 64,
-                            color: Colors.white.withOpacity(0.1)),
+                            color: Colors.white.withValues(alpha: 0.1)),
                         const SizedBox(height: 8),
                         Text(
                           'CAPTURED IMAGE',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withValues(alpha: 0.15),
                             letterSpacing: 2,
                             fontSize: 11,
                           ),
@@ -147,7 +147,7 @@ class _ReferenceDetectionScreenState extends State<ReferenceDetectionScreen> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -235,7 +235,7 @@ class _ReferenceDetectionScreenState extends State<ReferenceDetectionScreen> {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(c['icon'] as IconData, color: color, size: 24),
@@ -262,9 +262,9 @@ class _ReferenceDetectionScreenState extends State<ReferenceDetectionScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.negative.withOpacity(0.06),
+        color: AppColors.negative.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-        border: Border.all(color: AppColors.negative.withOpacity(0.2)),
+        border: Border.all(color: AppColors.negative.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
@@ -412,7 +412,7 @@ class _ScanningBarState extends State<_ScanningBar>
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    AppColors.accent.withOpacity(0.8),
+                    AppColors.accent.withValues(alpha: 0.8),
                     Colors.transparent,
                   ],
                 ),
