@@ -2,19 +2,39 @@ import { exportFile, isNative } from './platform';
 import { authTransition, loginErrorMessage } from './auth-state';
 import './style.css';
 import QRCode from 'qrcode';
-import { supabase, signIn, googleSignIn, getRecords } from './api';
+import { supabase, signIn, googleSignIn, getRecords, initializeNativeAuth } from './api';
+import { App } from '@capacitor/app';
+import { createRouteHistory, backAction } from './navigation';
 import { sampleRecords, filterRecords, hashImage, csv } from './records';
 import {icon,esc,refreshIcons,brand,pages,shell,overview,recordTable,badge,date,time} from './ui';
 import {history,capture,verify,settings,guide,login} from './pages';
 const app=document.querySelector('#app'),dialog=document.querySelector('#detail-dialog');
 const state={page:location.hash.slice(1).split('?')[0]||'overview',user:null,demo:false,records:[],query:'',filter:'ALL',loading:false,error:'',capture:null,stream:null,location:null,operator:'',reference:false,theme:localStorage.getItem('narctrace-theme')||'light'};
 let toastTimer;
+const routeHistory=createRouteHistory(state.page);
 function toast(message){const el=document.querySelector('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),5000);}
 function setTheme(theme){state.theme=theme;localStorage.setItem('narctrace-theme',theme);document.documentElement.dataset.theme=theme;}
 setTheme(state.theme);
-function navigate(page){if(!pages[page]&&page!=='login')page='overview';stopCamera();state.page=page;state.query='';state.filter='ALL';location.hash=page;render();window.scrollTo(0,0);}
+function navigate(page,{remember=true,replace=false}={}){if(!pages[page]&&page!=='login')page='overview';stopCamera();if(remember)routeHistory.visit(page);state.page=page;state.query='';state.filter='ALL';if(replace)window.history.replaceState(null,'',`#${page}`);else location.hash=page;render();window.scrollTo(0,0);}
+function goBack(){
+  const sidebar=document.querySelector('.sidebar');
+  switch(backAction({dialogOpen:dialog.open,menuOpen:matchMedia('(max-width:760px)').matches&&sidebar?.classList.contains('open'),cameraOpen:!!state.stream})){
+    case 'dialog':dialog.close();return;
+    case 'menu':sidebar.classList.remove('open');syncNavigation();return;
+    case 'camera':stopCamera();render();return;
+  }
+  const previous=routeHistory.back();
+  if(previous)navigate(previous,{remember:false,replace:true});
+  else if(state.page!=='overview'){routeHistory.reset('overview');navigate('overview',{remember:false,replace:true});}
+  else toast('You are on the overview page.');
+}
+const nativeReady=isNative?Promise.all([
+  App.addListener('backButton',goBack),
+  initializeNativeAuth(message=>{toast(message);const el=document.querySelector('#login-error');if(el)el.textContent=message;}),
+]):Promise.resolve();
+nativeReady.catch(()=>toast('App navigation could not initialize. Please reopen NarcTrace.'));
 function render(){if(!pages[state.page]&&state.page!=='login')state.page='overview';app.innerHTML=state.page==='login'?login(state):shell(state,({overview,history,capture,verify,settings,guide})[state.page](state));refreshIcons();bind();syncNavigation();if(state.page==='history')bindSearch();if(state.page==='capture')bindCapture();if(state.page==='verify')bindVerify();if(state.page==='login')bindLogin();}
-function bind(){document.querySelectorAll('[data-page]').forEach(el=>el.onclick=()=>navigate(el.dataset.page));document.querySelectorAll('[data-theme]').forEach(el=>el.onclick=()=>{stopCamera();setTheme(el.dataset.theme);render();});bindRecordButtons();document.querySelectorAll('[data-action]').forEach(el=>el.onclick=async()=>{switch(el.dataset.action){
+function bind(){document.querySelectorAll('[data-page]').forEach(el=>el.onclick=()=>navigate(el.dataset.page));document.querySelectorAll('button[data-theme]').forEach(el=>el.onclick=()=>{stopCamera();setTheme(el.dataset.theme);render();});bindRecordButtons();document.querySelectorAll('[data-action]').forEach(el=>el.onclick=async()=>{switch(el.dataset.action){
 case 'theme':stopCamera();setTheme(state.theme==='light'?'dark':'light');if(state.page==='login'){el.innerHTML=icon(state.theme==='light'?'moon':'sun');refreshIcons();}else render();break;
 case 'menu':document.querySelector('.sidebar').classList.toggle('open');syncNavigation();break;
 case 'account':if(state.user){const {error}=await supabase.auth.signOut();if(error){toast(error.message);break;}clearPrivateState();}navigate('login');break;
@@ -55,7 +75,7 @@ function bindLogin(){
   };
   google.onclick=async()=>{
     if(busy)return;setBusy(true);errorBox.textContent='';
-    try{if(isNative)throw new Error('Google sign-in is not configured for this Android preview. Please use your registered email account.');await googleSignIn();}
+    try{await nativeReady;await googleSignIn();}
     catch(error){if(form.isConnected)errorBox.textContent=loginErrorMessage(error);}
     finally{if(form.isConnected)setBusy(false);}
   };
@@ -71,7 +91,7 @@ async function setCapture(file,source='upload'){if(!file)return;if(!['image/jpeg
 function captureLocation(){if(!navigator.geolocation)return toast('Location is unavailable on this device.');document.querySelector('#location-state').textContent='Requesting location…';navigator.geolocation.getCurrentPosition(p=>{state.location={latitude:p.coords.latitude,longitude:p.coords.longitude,accuracy:p.coords.accuracy};const el=document.querySelector('#location-state');if(el)el.innerHTML=`${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}<small>Accuracy ±${Math.round(p.coords.accuracy)} m</small>`;},()=>{const el=document.querySelector('#location-state');if(el)el.textContent='Location unavailable';toast('Location could not be captured. Check permission and try again.');},{enableHighAccuracy:true,timeout:15000,maximumAge:0});}
 function bindCapture(){document.querySelector('#operator').oninput=e=>state.operator=e.target.value;document.querySelector('#reference-check').onclick=e=>{state.reference=!state.reference;e.currentTarget.setAttribute('aria-checked',String(state.reference));e.currentTarget.querySelector('.confirm-mark').innerHTML=state.reference?icon('check'):'';refreshIcons();};document.querySelector('#image-upload').onchange=e=>setCapture(e.target.files[0]);document.querySelector('#save-draft').onclick=async()=>{if(!state.capture)return toast('Capture or upload an image first.');const operator=document.querySelector('#operator').value.trim();if(!operator){toast('Enter your operator identifier.');return document.querySelector('#operator').focus();}if(!state.reference)return toast('Confirm that the reference card is included.');const {hash,file,timestamp,source}=state.capture;const record={id:crypto.randomUUID(),test_id:`DRAFT-${crypto.randomUUID().slice(0,8).toUpperCase()}`,operator_id:operator,captured_at:timestamp,timestamp_source:'Device clock; upload time for uploaded images',source,image_sha256:hash,image_name:file.name,result:null,classification_method:'Not performed',verification_status:'PENDING',signature:null,local:true,latitude:state.location?.latitude??null,longitude:state.location?.longitude??null,location_accuracy:state.location?.accuracy??null,preview:state.capture.url};state.records.unshift(record);state.capture=null;state.location=null;state.reference=false;navigate('history');toast('Unsigned capture saved in this tab. Export it before closing.');await openRecord(record.id);};}
 function bindVerify(){document.querySelector('#verify-form').onsubmit=async e=>{e.preventDefault();const expected=document.querySelector('#expected-hash').value.trim().toLowerCase();if(!/^[a-f0-9]{64}$/.test(expected))return toast('Enter a valid 64-character hexadecimal SHA-256 hash.');const file=document.querySelector('#verify-image').files[0];if(file.size>15*1024*1024)return toast('Choose an image smaller than 15 MB.');e.submitter.disabled=true;try{const actual=await hashImage(file),match=actual===expected;document.querySelector('#verify-result').innerHTML=`<div class="verification-outcome ${match?'match':'mismatch'}">${icon(match?'circle-check':'circle-alert')}<h3>${match?'Image fingerprint matches':'Image fingerprint does not match'}</h3><p>${match?'The file matches the supplied fingerprint. The record’s signature has not been verified.':'This file differs from the supplied fingerprint. Check that you used the unmodified original.'}</p><code>${actual}</code></div>`;refreshIcons();}catch{toast('Unable to read the image. Please try again.');}finally{e.submitter.disabled=false;}};}
-window.addEventListener('hashchange',()=>{const page=location.hash.slice(1).split('?')[0]||'overview';if(page!==state.page){stopCamera();state.page=pages[page]||page==='login'?page:'overview';render();}});
+window.addEventListener('hashchange',()=>{const page=location.hash.slice(1).split('?')[0]||'overview';if(page!==state.page){stopCamera();state.page=pages[page]||page==='login'?page:'overview';routeHistory.visit(state.page);render();}});
 window.addEventListener('beforeunload',e=>{stopCamera();if(state.records.some(r=>r.local)||state.capture){e.preventDefault();e.returnValue='';}});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){const search=document.querySelector('#record-search');if(search){e.preventDefault();search.focus();}}});
 dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});

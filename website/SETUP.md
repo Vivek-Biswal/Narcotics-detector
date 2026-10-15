@@ -12,6 +12,14 @@ https://supabase.com/dashboard/project/dfstveieqlmkumycaknn/auth/providers
 5. If the Google consent screen is in testing mode, add the intended operators as test users.
 6. Test Google login and logout with an actual account. The website checks provider availability and gives an actionable error while Google is disabled.
 
+### Android Google sign-in (1.0.2+)
+
+Android opens Google login in a system browser tab and exchanges a PKCE authorization code on return. Firebase is not required. Add `in.etaernal.narctrace://auth/callback` to this Supabase project's Authentication URL Configuration redirect allowlist.
+
+The Google Web OAuth client's authorized redirect URI remains `https://dfstveieqlmkumycaknn.supabase.co/auth/v1/callback`. Enable the Supabase Google provider with that client's ID and secret. Store the secret only in the Supabase dashboard. These console settings are required before the implemented mobile flow can work.
+
+Test successful sign-in, cancellation, and returning to both an already-running app and a cold app launch. Only the exact Android callback host and path are accepted.
+
 Official guide: https://supabase.com/docs/guides/auth/social-login/auth-google
 
 Email login is already enabled in the project. Supply authorised operator accounts through your administrator; the website does not create privileged operator profiles automatically.
